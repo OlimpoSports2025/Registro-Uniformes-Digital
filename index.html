@@ -111,6 +111,92 @@
         }
     </style>
 </head>
+    <script>
+document.getElementById('formularioEquipo').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const form = e.target;
+
+  const data = {
+    nombreEquipo: form.nombreEquipo.value,
+    tipoTela: form.tipoTela.value,
+    anotaciones: form.anotaciones.value,
+    integrantes: [],
+    calentamiento: [],
+    entrenamiento: [],
+    porra: []
+  };
+
+  // Captura de tabla Integrantes
+  document.querySelectorAll('#tablaIntegrantes tbody tr').forEach(row => {
+    const inputs = row.querySelectorAll('input, select');
+    if(inputs.length >= 4){
+      data.integrantes.push({
+        numero: inputs[0].value,
+        nombre: inputs[1].value,
+        tallaJersey: inputs[2].value,
+        tallaShort: inputs[3].value
+      });
+    }
+  });
+
+  // Captura de tabla Calentamiento
+  document.querySelectorAll('#tablaCalentamiento tbody tr').forEach(row => {
+    const inputs = row.querySelectorAll('input, select');
+    if(inputs.length >= 3){
+      data.calentamiento.push({
+        nombre: inputs[0].value,
+        numero: inputs[1].value,
+        talla: inputs[2].value
+      });
+    }
+  });
+
+  // Captura de tabla Entrenamiento
+  document.querySelectorAll('#tablaEntrenamiento tbody tr').forEach(row => {
+    const inputs = row.querySelectorAll('input, select');
+    if(inputs.length >= 3){
+      data.entrenamiento.push({
+        nombre: inputs[0].value,
+        numero: inputs[1].value,
+        talla: inputs[2].value
+      });
+    }
+  });
+
+  // Captura de tabla Porra
+  document.querySelectorAll('#tablaPorra tbody tr').forEach(row => {
+    const inputs = row.querySelectorAll('input, select');
+    if(inputs.length >= 3){
+      data.porra.push({
+        nombre: inputs[0].value,
+        numero: inputs[1].value,
+        talla: inputs[2].value
+      });
+    }
+  });
+
+  // Enviar los datos
+  fetch('https://script.google.com/macros/s/AKfycbxbc6THevpF4mYqOGQoKA4VBO2EFddzlSAhP5Oq6HKe4P0Fj0rjFdSayQa1VyGpw7TF/exec', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(response => {
+    if (response.status === 'success') {
+      alert('Formulario enviado correctamente');
+      form.reset();
+    } else {
+      alert('Error al enviar el formulario');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Error al enviar el formulario');
+  });
+});
+</script>
 <body>
 
 <header>
